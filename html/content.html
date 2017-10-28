@@ -1,0 +1,43 @@
+<div id="gray-out-div"></div>
+
+<div class="header">
+    <img id="header-logo" src="/sites/BiosimsPS-Denosumab/ARD/SiteAssets/images/logo.png">
+    <h2>Dashboard</h2>
+</div>
+
+<div id="main-wrapper">
+    <div class="search-elements-wrapper">
+        <input class="search-input" placeholder="Search"/>
+        <a class="search-cancel-button">Clear</a>
+        <a class="button search-button"><img src="/sites/BiosimsPS-Denosumab/ARD/SiteAssets/images/search_icon.png"/></a>
+        <div id="number-of-search-results-holder"></div>
+    </div>
+    <table id="inventory-table" class="scrollable-table">
+        <thead>
+            <tr>
+                <th>Material Name</th>
+                <th>Manufacturer</th>
+                <th>Lot</th>
+                <th>Quantity</th>
+                <th>Storage Asset ID</th>
+                <th></th>
+            </tr>
+            <tr class="shadow">
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </br>
+    <div>
+        <a class="button" onclick="createListItem()">Add New Item</a>
+        <a class="button" onclick="showPopup()">Show Popup</a>
+    </div>
+</div>
+
+<div class="popup-window">
+    <div class="heading">Popup Window
+        <span class="close-popup-button" onclick="hidePopup()"></span>
+    </div>
+</div>

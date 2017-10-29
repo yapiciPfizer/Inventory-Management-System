@@ -1,11 +1,11 @@
 @charset "utf-8";
 @import "variables";
 
-* {
+*, body, html {
     /* Setting the parameters for the whole website for all views */
-    font-family: 'AlegreyaSans', sans-serif;
-    font-size: 16px;
-    color: #147FC4;
+    font-family: 'OpenSans', sans-serif;
+    font-size: 14px;
+    color: $main-text-color;
 }
 
 html, body, form, #s4-workspace, #contentBox {
@@ -62,7 +62,7 @@ body.ms-backgroundImage {
     text-align: center;
     font-size: 2.6em;
     font-weight: bold;
-    font-family: 'AlegreyaSans', sans-serif;
+    font-family: 'OpenSans', sans-serif;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -71,7 +71,7 @@ body.ms-backgroundImage {
     width: calc(100vw - 50px);
     min-width: 800px;
     text-align: center;
-    
+
     #inventory-table {
         margin: 20px 0px 0px 0px;
     }
@@ -134,11 +134,10 @@ body.ms-backgroundImage {
             tr td {
                 background: $white-color;
                 padding: 0;
-                padding: 8px 12px;
 
                 select, input {
                     border: none;
-                    padding: 0px;
+                    padding: 8px 12px;
                     padding-right: 24px;
                     width: 100%;
                     text-align-last:center;
@@ -149,6 +148,7 @@ body.ms-backgroundImage {
                         outline-style:none;
                         box-shadow:none;
                         border: none;
+                        background: $light-color-2;
                     }
                 }
             }
@@ -371,7 +371,6 @@ body.ms-backgroundImage {
         border-top: 1px solid #cccccc;
         border-left: 1px solid #cccccc;
         color: #000000;
-        font: 95% Arial, Helvetica, sans-serif;
         border-radius: 0;
         font-size: 1em;
         @include top-left-corner-radius($default-border-radius);

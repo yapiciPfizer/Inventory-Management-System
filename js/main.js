@@ -7,48 +7,50 @@ $(document).ready(function () {
             clearInterval(loadedInterval);
         }
     }, 200);
-
-    $(function () {
-        $('html').on('focus', '[placeholder]', function () {
-            var input = $(this);
-            if (input.val() === input.attr('placeholder')) {
-                input.val('');
-                input.removeClass('placeholder');
-                input.css('color', '#1C4D6F');
-                input.css('font-family', "'AlegreyaSans', sans-serif");
-            }
-        });
-
-        $('html').on('blur', '[placeholder]', function () {
-            var input = $(this);
-            if (input.val() === '' || input.val() === input.attr('placeholder')) {
-                input.addClass('placeholder');
-                input.val(input.attr('placeholder'));
-                input.css('color', '#aaaaaa');
-                input.css('font-family', "'AlegreyaSans', sans-serif");
-            } else {
-                input.css('color', '#1C4D6F');
-                input.css('font-family', "'AlegreyaSans', sans-serif");
-            }
-        });
-    });
 });
 
 function webPartsLoaded() {
     populateTable();
-    getPerson();
     preparePlaceholders();
     adjustShadows();
 
     function preparePlaceholders() {
+
+        var fontFamily = $('html').css('font-family');
+
+        $(function () {
+            $('html').on('focus', '[placeholder]', function () {
+                var input = $(this);
+                if (input.val() === input.attr('placeholder')) {
+                    input.val('');
+                    input.removeClass('placeholder');
+                    input.css('color', '#1C4D6F');
+                    input.css('font-family', fontFamily);
+                }
+            });
+
+            $('html').on('blur', '[placeholder]', function () {
+                var input = $(this);
+                if (input.val() === '' || input.val() === input.attr('placeholder')) {
+                    input.addClass('placeholder');
+                    input.val(input.attr('placeholder'));
+                    input.css('color', '#aaaaaa');
+                    input.css('font-family', fontFamily);
+                } else {
+                    input.css('color', '#1C4D6F');
+                    input.css('font-family', fontFamily);
+                }
+            });
+        });
+
         $('[placeholder]').blur();
     }
-    
+
     function adjustShadows() {
         var shadow = $(".shadow");
-        shadow.each(function() {
+        shadow.each(function () {
             var currentShadow = $(this);
-            if(currentShadow.is("tr")) {
+            if (currentShadow.is("tr")) {
                 currentShadow.find('th').attr('colspan', currentShadow.parent().find("tr:first-child th").length);
             }
         });
@@ -86,7 +88,6 @@ function onQueryFailed(sender, args) {
     alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
 }
 
-
 function showPopup() {
     $(".popup-window").fadeIn();
     $("#gray-out-div").fadeIn();
@@ -97,11 +98,37 @@ function hidePopup() {
     $("#gray-out-div").fadeOut();
 }
 
+MiscFunctions = (function () {
+
+    function prepareTableCell(value) {
+        return "<td><input value='" + value + "'/></td>";
+    }
+
+    function prepareTableRows(array, keys) {
+        var returnHtml = "";
+
+        for (var i = 0, max = array.length; i < max; i++) {
+            returnHtml += "<tr>";
+            for (var j = 0, m = keys.length; j < m; j++) {
+                returnHtml += prepareTableCell(array[i][keys[j]]);
+            }
+            returnHtml += "</tr>";
+        }
+
+        return returnHtml;
+    }
+
+    return {
+        prepareTableCell: prepareTableCell,
+        prepareTableRows: prepareTableRows
+    }
+})();
+
 function populateTable() {
     var apiBaseUrl = "/_api/web/lists/getbytitle('Test')/items";
     var apiQueryUrl = "?";
     apiQueryUrl += "$select=Title,ID,MaterialName,Manufacturer,LotNo,Quantity,StorageAssetID";
-//apiQueryUrl += "&$filter=(((ID eq 1) or (ID eq 2)) and (substringof('engin',Author)))";
+    //apiQueryUrl += "&$filter=(((ID eq 1) or (ID eq 2)) and (substringof('engin',Author)))";
     apiQueryUrl += "&$filter=substringof('engin',Author)";
     apiQueryUrl += "&$orderby=ID desc";
 
@@ -110,40 +137,78 @@ function populateTable() {
         method: "GET",
         headers: {"Accept": "application/json; odata=verbose"},
         success: function (data) {
-            var results = data.d.results;
-            var numOfValues = results.length;
-            var returnHtml = "";
+            var keys = ['MaterialName', 'Manufacturer', 'LotNo', 'Quantity', 'StorageAssetID']
 
-            for (var i = 0; i < numOfValues; i++) {
-                returnHtml += "<tr>";
-                returnHtml += "<td>" + results[i]['MaterialName'] + "</td>";
-                returnHtml += "<td>" + results[i]['Manufacturer'] + "</td>";
-                returnHtml += "<td>" + results[i]['LotNo'] + "</td>";
-                returnHtml += "<td>" + results[i]['Quantity'] + "</td>";
-                returnHtml += "<td>" + results[i]['StorageAssetID'] + "</td>";
-                returnHtml += "</tr>";
+            $("#inventory-table").find("tbody").html(MiscFunctions.prepareTableRows(data.d.results, keys));
+        },
+        error: function (data) {
+            alert("Error: " + data);
+        }
+    });
+}
 
+Items = (function () {
+
+    var isNewItemSaved = true;
+
+    function addNew() {
+        var inventoryTableBody = $("#inventory-table").find('tbody');
+
+        if (isNewItemSaved) {
+            var numberOfCells = inventoryTableBody.find('tr:first-child td').length;
+
+            var emptyRow = "<tr>";
+            for (var i = 0; i < numberOfCells; i++) {
+                emptyRow += MiscFunctions.prepareTableCell("");
             }
+            emptyRow += "</tr>";
 
-            $("#inventory-table").find("tbody").html(returnHtml);
-        },
-        error: function (data) {
-            alert("Error: " + data);
+            inventoryTableBody.html(emptyRow + inventoryTableBody.html());
+
+            isNewItemSaved = false;
         }
-    });
-}
 
-function getPerson() {
-    $.ajax({
-        url: siteUrl + "/_api/web/siteusers?$select=Id,Title,Email,LoginName,IsSiteAdmin&$filter=substringof('Yapici', Title)",
-        method: "GET",
-        headers: {"Accept": "application/json; odata=verbose"},
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (data) {
-            alert("Error: " + data);
-        }
-    });
-}
+        inventoryTableBody.find("tr:first-child td:first-child input").focus();
+    }
 
+    return {
+        addNew: addNew
+    }
+})();
+
+Users = (function () {
+    var currentUserId = getCurrentUserId();
+    
+    getUser('Yapici, Engin');
+
+    function getCurrentUserId() {
+        var apiBaseUrl = "/_api/web/CurrentUser?$select=Id";
+
+        $.ajax({
+            url: siteUrl + apiBaseUrl,
+            method: "GET",
+            headers: {"Accept": "application/json; odata=verbose"},
+            success: function (data) {
+//                console.log(data);
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    }
+
+    function getUser(name) {
+        $.ajax({
+            url: siteUrl + "/_api/web/siteusers?$select=Id,Title,Email,LoginName,IsSiteAdmin&$filter=substringof('" + name + "', Title)",
+            method: "GET",
+            headers: {"Accept": "application/json; odata=verbose"},
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    }
+
+})();

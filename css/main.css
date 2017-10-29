@@ -18,6 +18,26 @@
   src: url("../font/AlegreyaSans-italic.ttf");
   font-weight: normal;
   font-style: italic; }
+@font-face {
+  font-family: 'OpenSans';
+  src: url("../font/OpenSans-Regular.ttf");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'OpenSans';
+  src: url("../font/OpenSans-Bold.ttf");
+  font-weight: bold;
+  font-style: normal; }
+@font-face {
+  font-family: 'OpenSans';
+  src: url("../font/OpenSans-BoldItalic.ttf");
+  font-weight: bold;
+  font-style: italic; }
+@font-face {
+  font-family: 'OpenSans';
+  src: url("../font/OpenSans-Italic.ttf");
+  font-weight: normal;
+  font-style: italic; }
 #s4-workspace,
 #s4-bodyContainer {
   background-color: transparent;
@@ -113,11 +133,11 @@ a {
   -ms-user-select: none;
   user-select: none; }
 
-* {
+*, body, html {
   /* Setting the parameters for the whole website for all views */
-  font-family: 'AlegreyaSans', sans-serif;
-  font-size: 16px;
-  color: #147FC4; }
+  font-family: 'OpenSans', sans-serif;
+  font-size: 14px;
+  color: #222222; }
 
 html, body, form, #s4-workspace, #contentBox {
   max-width: 100%;
@@ -166,7 +186,7 @@ body.ms-backgroundImage {
   text-align: center;
   font-size: 2.6em;
   font-weight: bold;
-  font-family: 'AlegreyaSans', sans-serif;
+  font-family: 'OpenSans', sans-serif;
   white-space: nowrap;
   overflow: hidden; }
 
@@ -220,11 +240,10 @@ body.ms-backgroundImage {
         background: transparent; }
     #main-wrapper table tbody tr td {
       background: #ffffff;
-      padding: 0;
-      padding: 8px 12px; }
+      padding: 0; }
       #main-wrapper table tbody tr td select, #main-wrapper table tbody tr td input {
         border: none;
-        padding: 0px;
+        padding: 8px 12px;
         padding-right: 24px;
         width: 100%;
         text-align-last: center;
@@ -233,7 +252,8 @@ body.ms-backgroundImage {
         #main-wrapper table tbody tr td select:focus, #main-wrapper table tbody tr td input:focus {
           outline-style: none;
           box-shadow: none;
-          border: none; }
+          border: none;
+          background: #C8E5F9; }
     #main-wrapper table tbody tr:last-child td:first-child {
       -webkit-border-bottom-left-radius: 4px;
       -moz-border-radius-bottomleft: 4px;
@@ -247,7 +267,7 @@ body.ms-backgroundImage {
     #main-wrapper table tbody tr:nth-child(odd) > td {
       background-color: #ffffff; }
     #main-wrapper table tbody tr:hover > td {
-      background-color: #EFF6FB; }
+      background-color: #EDF6FD; }
   #main-wrapper .scrollable-table {
     width: 100%;
     left: 0;
@@ -447,7 +467,6 @@ body.ms-backgroundImage {
     border-top: 1px solid #cccccc;
     border-left: 1px solid #cccccc;
     color: #000000;
-    font: 95% Arial, Helvetica, sans-serif;
     border-radius: 0;
     font-size: 1em;
     -webkit-border-top-left-radius: 4px;
